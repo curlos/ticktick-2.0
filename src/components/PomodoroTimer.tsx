@@ -1,11 +1,11 @@
 import { CircularProgressbarWithChildren, buildStyles } from "react-circular-progressbar";
 import 'react-circular-progressbar/dist/styles.css';
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import alarmSound from '/clock-alarm-8761.mp3';
 import iosDarkNoise from '/IOS Dark Noise Background sound 1 Hour.mp3';
 
-const PomodoroTimer = () => {
-    const [initialSeconds, setIntiialSeconds] = useState(5); // Assuming you want to start with a 5 seconds timer for testing
+const PomodoroTimer: React.FC = () => {
+    const [initialSeconds, _] = useState(5); // Assuming you want to start with a 5 seconds timer for testing
     const [seconds, setSeconds] = useState(initialSeconds);
     const [isActive, setIsActive] = useState(false);
     const [isOvertime, setIsOvertime] = useState(false);
@@ -23,6 +23,7 @@ const PomodoroTimer = () => {
             intervalId = setInterval(() => {
                 setSeconds(prevSeconds => {
                     if (prevSeconds === 0 && !isOvertime) {
+                        console.log('hello world');
                         playPomodoroCompleteSound();
                         showNotification();
                         setIsOvertime(true); // Switch to overtime
@@ -74,6 +75,10 @@ const PomodoroTimer = () => {
 
     const playPomodoroCompleteSound = () => {
         const audio = new Audio(alarmSound);
+        audio.onended = () => {
+            // backgroundNoise[0].play();
+        };
+        backgroundNoise[0].pause();
         audio.play();
     };
 
@@ -94,8 +99,8 @@ const PomodoroTimer = () => {
         return (seconds / initialSeconds) * 100;
     };
 
-    const bgThemeColor = 'bg-[#FE7C00]';
-    const textThemeColor = 'text-[#FE7C00]';
+    const bgThemeColor = 'bg-[#FF7D01]';
+    const textThemeColor = 'text-[#FF7D01]';
 
     return (
         <div className="text-center">
@@ -103,8 +108,8 @@ const PomodoroTimer = () => {
             <CircularProgressbarWithChildren value={getPercentage()}
                 strokeWidth={1.5}
                 styles={buildStyles({
-                    textColor: "#FE7C00",
-                    pathColor: "#FE7C00",
+                    textColor: "#FF7D01",
+                    pathColor: "#FF7D01",
                     trailColor: "#3d3c3c"
                 })}
                 counterClockwise={true}
