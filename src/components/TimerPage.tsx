@@ -3,8 +3,18 @@ import 'react-circular-progressbar/dist/styles.css';
 import { useState, useEffect } from "react";
 import alarmSound from '/clock-alarm-8761.mp3';
 import iosDarkNoise from '/IOS Dark Noise Background sound 1 Hour.mp3';
+import { FaHistory, FaEllipsisH } from "react-icons/fa";
+import IconsBar from "./IconsBar";
+import { Link } from "react-router-dom";
 
-const PomodoroTimer: React.FC = () => {
+const bgThemeColor = 'bg-[#FF7D01]';
+const textThemeColor = 'text-[#FF7D01]';
+
+interface PomodoroTimerProps {
+    selectedButton: string;
+}
+
+const PomodoroTimer: React.FC<PomodoroTimerProps> = () => {
     const [initialSeconds, _] = useState(5); // Assuming you want to start with a 5 seconds timer for testing
     const [seconds, setSeconds] = useState(initialSeconds);
     const [isActive, setIsActive] = useState(false);
@@ -23,7 +33,6 @@ const PomodoroTimer: React.FC = () => {
             intervalId = setInterval(() => {
                 setSeconds(prevSeconds => {
                     if (prevSeconds === 0 && !isOvertime) {
-                        console.log('hello world');
                         playPomodoroCompleteSound();
                         showNotification();
                         setIsOvertime(true); // Switch to overtime
@@ -99,9 +108,6 @@ const PomodoroTimer: React.FC = () => {
         return (seconds / initialSeconds) * 100;
     };
 
-    const bgThemeColor = 'bg-[#FF7D01]';
-    const textThemeColor = 'text-[#FF7D01]';
-
     return (
         <div className="text-center">
             <div className={`text-white mb-4 cursor-pointer`}>Focus <span className="text-gray-500">{'>'}</span></div>
@@ -114,10 +120,12 @@ const PomodoroTimer: React.FC = () => {
                 })}
                 counterClockwise={true}
             >
-                <div className="text-white text-[40px] flex justify-center gap-4 w-[100%]" onMouseOver={() => console.log('helfodsf')}>
-                    <div className={`${textThemeColor} cursor-pointer`} onClick={() => setSeconds(seconds - 300)}>-</div>
+                <div className="text-white text-[40px] flex justify-center gap-4 w-[100%] select-none cursor-pointer" onMouseOver={() => {
+
+                }}>
+                    <div className={`${textThemeColor}`} onClick={() => setSeconds(seconds - 300)}>-</div>
                     <div className="text-center text-[45px]">{formatSeconds(seconds)}</div>
-                    <div className={`${textThemeColor} cursor-pointer`} onClick={() => setSeconds(seconds + 300)}>+</div>
+                    <div className={`${textThemeColor}`} onClick={() => setSeconds(seconds + 300)}>+</div>
                 </div>
             </CircularProgressbarWithChildren>
 
@@ -125,12 +133,59 @@ const PomodoroTimer: React.FC = () => {
                 <button type="button" className={`${bgThemeColor} rounded-full py-3 px-10 text-white min-w-[200px]`} onClick={handleTimerAction}>
                     {isActive ? 'Pause' : (seconds !== initialSeconds ? 'Continue' : 'Start')}
                 </button>
-                <button type="button" className={`${seconds !== initialSeconds && !isActive ? '' : 'invisible '}${bgThemeColor} rounded-full py-3 px-10 text-white min-w-[200px]`} onClick={handleResetTimer}>
-                    End
-                </button>
+                {!isActive && seconds !== initialSeconds && (
+                    <button type="button" className={`${seconds !== initialSeconds && !isActive ? '' : 'invisible '}${bgThemeColor} rounded-full py-3 px-10 text-white min-w-[200px]`} onClick={handleResetTimer}>
+                        End
+                    </button>
+                )}
+                {!isActive && <div className="text-[#666666] mt-3">Today: 4 pomos - 2 hours 37 minutes</div>}
             </div>
         </div>
     );
 };
 
-export default PomodoroTimer;
+interface TopBarProps {
+    selectedButton: string,
+    setSelectedButton: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const TopBar: React.FC<TopBarProps> = ({ selectedButton, setSelectedButton }) => {
+    const sharedButtonStyle = `py-1 px-4 rounded-3xl cursor-pointer`;
+    const selectedButtonStyle = `${sharedButtonStyle} bg-[#321900] text-[#FE7C01]`;
+    const unselectedButtonStyle = `${sharedButtonStyle} text-[#666666]`;
+
+    return (
+        <div className="flex justify-between items-center">
+            <Link to="/focus-records">
+                <FaHistory size={'25px'} color={'#999999'} />
+            </Link>
+
+            <div className="flex gap-1 mx-[100px]">
+                <div className={selectedButton === 'pomo' ? selectedButtonStyle : unselectedButtonStyle} onClick={() => setSelectedButton('pomo')}>Pomo</div>
+                <div className={selectedButton === 'stopwatch' ? selectedButtonStyle : unselectedButtonStyle} onClick={() => setSelectedButton('stopwatch')}>Stopwatch</div>
+            </div>
+
+            <div>
+                <FaEllipsisH size={'25px'} color={'#999999'} />
+            </div>
+        </div>
+    );
+};
+
+const TimerPage: React.FC = () => {
+    const [selectedButton, setSelectedButton] = useState('pomo');
+
+    return (
+        <div className="w-h-screen min-h-screen flex flex-col items-center bg-black">
+            <div className="flex flex-col flex-1 container pt-6">
+                <TopBar selectedButton={selectedButton} setSelectedButton={setSelectedButton} />
+                <div className="flex-1 flex justify-center items-center">
+                    <PomodoroTimer selectedButton={selectedButton} />
+                </div>
+            </div>
+            <IconsBar />
+        </div>
+    );
+};
+
+export default TimerPage;
