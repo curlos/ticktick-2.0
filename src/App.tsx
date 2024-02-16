@@ -9,6 +9,8 @@ import TimerPage from './components/TimerPage';
 import IconsBar from './components/IconsBar';
 import TaskList from './components/TaskList';
 import FocusRecordsPage from './components/FocusRecordsPage';
+import TaskDetailsPage from './components/TaskDetailsPage';
+import TaskListPage from './components/TaskListPage';
 
 interface OverlayProps {
   children: React.ReactNode;
@@ -20,10 +22,13 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={
-          <TaskList />
+          <TaskListPage />
         } />
         <Route path="/tasks" element={
-          <TaskList />
+          <TaskListPage />
+        } />
+        <Route path="/tasks/:taskId" element={
+          <TaskDetailsPage />
         } />
         <Route path="/focus" element={
           <TimerPage />
@@ -33,7 +38,7 @@ function App() {
         } />
         {/* Fallback route for 404 Not Found */}
         <Route path="*" element={
-          <TaskList />
+          <TaskListPage />
         } />
       </Routes>
     </Router>

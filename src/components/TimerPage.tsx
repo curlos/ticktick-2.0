@@ -6,6 +6,7 @@ import iosDarkNoise from '/IOS Dark Noise Background sound 1 Hour.mp3';
 import { FaHistory, FaEllipsisH } from "react-icons/fa";
 import IconsBar from "./IconsBar";
 import { Link } from "react-router-dom";
+import PixelArt from "./PixelArt";
 
 const bgThemeColor = 'bg-[#FF7D01]';
 const textThemeColor = 'text-[#FF7D01]';
@@ -173,14 +174,18 @@ const TopBar: React.FC<TopBarProps> = ({ selectedButton, setSelectedButton }) =>
 };
 
 const TimerPage: React.FC = () => {
-    const [selectedButton, setSelectedButton] = useState('pomo');
+    const [selectedButton, setSelectedButton] = useState('stopwatch');
 
     return (
         <div className="w-h-screen min-h-screen flex flex-col items-center bg-black">
             <div className="flex flex-col flex-1 container pt-6">
                 <TopBar selectedButton={selectedButton} setSelectedButton={setSelectedButton} />
                 <div className="flex-1 flex justify-center items-center">
-                    <PomodoroTimer selectedButton={selectedButton} />
+                    {selectedButton === 'pomo' ? (
+                        <PomodoroTimer selectedButton={selectedButton} />
+                    ) : (
+                        <PixelArt gap="1px" />
+                    )}
                 </div>
             </div>
             <IconsBar />
