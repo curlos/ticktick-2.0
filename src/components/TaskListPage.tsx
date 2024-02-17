@@ -3,9 +3,11 @@ import IconsBar from "./IconsBar";
 import Task from "./Task";
 import { FaEllipsisH } from "react-icons/fa";
 import { FaChevronDown, FaChevronLeft } from "react-icons/fa6";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TaskList from "./TaskList";
 import { tasks } from "../utils/Tasks";
+import { arrayToObjectByKey } from "../utils/Helpers";
+import { TaskObjProps } from "../types";
 
 const TopBar: React.FC = () => {
 
@@ -26,9 +28,13 @@ const TopBar: React.FC = () => {
     );
 };
 
-const TaskListPage = () => {
+interface TaskListPageProps {
+    tasks: {
+        [key: string]: TaskObjProps;
+    };
+}
 
-    const highPriorityTasks = Object.values(tasks);
+const TaskListPage: React.FC<TaskListPageProps> = ({ tasks }) => {
 
     return (
         <div className="w-h-screen min-h-screen flex flex-col items-center bg-black text-white">
@@ -36,10 +42,10 @@ const TaskListPage = () => {
                 <TopBar />
 
                 <div className="mt-10 flex flex-col gap-3">
-                    <TaskList listName={'High Priority'} tasks={highPriorityTasks} />
-                    <TaskList listName={'Medium Priority'} tasks={highPriorityTasks} />
+                    <TaskList listName={'High Priority'} tasks={tasks} />
+                    {/* <TaskList listName={'Medium Priority'} tasks={highPriorityTasks} />
                     <TaskList listName={'Low Priority'} tasks={highPriorityTasks} />
-                    <TaskList listName={'Completed'} tasks={highPriorityTasks} />
+                    <TaskList listName={'Completed'} tasks={highPriorityTasks} /> */}
                 </div>
             </div>
 

@@ -1,9 +1,9 @@
 export interface TaskObjProps {
-    id: string,
+    _id: string,
     title: string,
     completed: boolean,
     directSubtasks: Array<string>,
-    uppermostTask?: boolean,
+    parentId?: string,
     completedPomodoros: number,
     timeTaken: number,
     estimatedDuration: number;

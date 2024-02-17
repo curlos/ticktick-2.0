@@ -4,7 +4,6 @@ import { FaChevronLeft, FaAnglesUp, FaRegSquare, FaSquareCheck, FaFlag, FaStopwa
 import { FaEllipsisH } from 'react-icons/fa';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { TaskObjProps, Tasks } from '../types';
-import { tasks } from '../utils/Tasks';
 import { millisecondsToHoursAndMinutes } from '../utils/Helpers';
 import TaskList from './TaskList';
 import Task from './Task';
@@ -37,37 +36,37 @@ const SimpleFocusRecord: React.FC<SimpleFocusRecord> = ({ task }) => {
 };
 
 const FocusRecordsList = () => {
-    const tasks: Tasks = {
-        '1a781d9a-c4e4-461f-92cd-2b2b7358489e': {
-            id: '1a781d9a-c4e4-461f-92cd-2b2b7358489e',
-            title: 'Twitter 2.0',
-            completed: false,
-            directSubtasks: ['6b022e51-8c95-462e-9cc8-3bcd5f386798'],
-            uppermostTask: true,
-            completedPomodoros: 8,
-            timeTaken: 49500000, // 13h45m
-            estimatedDuration: 144000000,
-            deadline: 'Feb 7'
-        },
-        '6b022e51-8c95-462e-9cc8-3bcd5f386798': {
-            id: '6b022e51-8c95-462e-9cc8-3bcd5f386798',
-            title: 'Write comments',
-            completed: false,
-            directSubtasks: ['27366938-9da0-4ccf-97a6-a68817e5fb84'],
-            completedPomodoros: 0,
-            timeTaken: 0, // 13h45m
-            estimatedDuration: 0
-        },
-        '27366938-9da0-4ccf-97a6-a68817e5fb84': {
-            id: '27366938-9da0-4ccf-97a6-a68817e5fb84',
-            title: '...rest',
-            completed: false,
-            directSubtasks: [],
-            completedPomodoros: 0,
-            timeTaken: 0, // 13h45m
-            estimatedDuration: 0
-        },
-    };
+    // const tasks: Tasks = {
+    //     '1a781d9a-c4e4-461f-92cd-2b2b7358489e': {
+    //         id: '1a781d9a-c4e4-461f-92cd-2b2b7358489e',
+    //         title: 'Twitter 2.0',
+    //         completed: false,
+    //         directSubtasks: ['6b022e51-8c95-462e-9cc8-3bcd5f386798'],
+    //         uppermostTask: true,
+    //         completedPomodoros: 8,
+    //         timeTaken: 49500000, // 13h45m
+    //         estimatedDuration: 144000000,
+    //         deadline: 'Feb 7'
+    //     },
+    //     '6b022e51-8c95-462e-9cc8-3bcd5f386798': {
+    //         id: '6b022e51-8c95-462e-9cc8-3bcd5f386798',
+    //         title: 'Write comments',
+    //         completed: false,
+    //         directSubtasks: ['27366938-9da0-4ccf-97a6-a68817e5fb84'],
+    //         completedPomodoros: 0,
+    //         timeTaken: 0, // 13h45m
+    //         estimatedDuration: 0
+    //     },
+    //     '27366938-9da0-4ccf-97a6-a68817e5fb84': {
+    //         id: '27366938-9da0-4ccf-97a6-a68817e5fb84',
+    //         title: '...rest',
+    //         completed: false,
+    //         directSubtasks: [],
+    //         completedPomodoros: 0,
+    //         timeTaken: 0, // 13h45m
+    //         estimatedDuration: 0
+    //     },
+    // };
 
     return (
         <div className="flex flex-col gap-[50px]">
@@ -119,7 +118,14 @@ const TopBar: React.FC = () => {
     );
 };
 
-const TaskDetailsPage = () => {
+interface TaskDetailsPageProps {
+    tasks: {
+        [key: string]: TaskObjProps;
+    };
+}
+
+const TaskDetailsPage: React.FC<TaskDetailsPageProps> = ({ tasks }) => {
+    console.log(tasks);
     let { taskId } = useParams();
     let navigate = useNavigate();
     const [task, setTask] = useState<TaskObjProps>({});
@@ -139,7 +145,7 @@ const TaskDetailsPage = () => {
         return null;
     }
 
-    const { id, title, directSubtasks, uppermostTask, completedPomodoros, timeTaken, estimatedDuration, deadline, description } = task;
+    const { _id, title, directSubtasks, uppermostTask, completedPomodoros, timeTaken, estimatedDuration, deadline, description } = task;
     const formattedTimeTaken = millisecondsToHoursAndMinutes(timeTaken);
     const formattedEstimatedDuration = millisecondsToHoursAndMinutes(estimatedDuration);
 
@@ -168,6 +174,8 @@ const TaskDetailsPage = () => {
                             <FaFlag size={'20px'} color={'#E1312F'} />
                         </div>
                     </div>
+
+                    <div className="mt-3 bg-[#FF7D01] h-[3px]"></div>
 
                     <div className="mt-5">
                         <div className="flex gap-[4px] items-center">
@@ -219,7 +227,7 @@ const TaskDetailsPage = () => {
                         <div className="rounded-lg mt-5 py-1 pr-5 bg-[#242424]">
                             {/* Subtasks  */}
                             {directSubtasks.map((subtaskId) => (
-                                <Task key={subtaskId} taskId={subtaskId} />
+                                <Task key={subtaskId} tasks={tasks} taskId={subtaskId} />
                             ))}
 
                             <div className="flex items-center gap-2 px-8 pt-5 pb-3 text-[#FF7D01] bg-[#242424] cursor-pointer">

@@ -2,20 +2,22 @@ import { useState } from "react";
 import { FaRegSquare, FaSquareCheck, FaChevronDown, FaChevronLeft, FaRegStar, FaStopwatch, FaListCheck } from "react-icons/fa6";
 import { millisecondsToHoursAndMinutes } from "../utils/Helpers";
 import { useNavigate } from "react-router-dom";
-import { tasks } from "../utils/Tasks";
-
+import { TaskObjProps } from "../types";
 interface TaskComponentProps {
+    tasks: TaskObjProps[];
     taskId: string;
 }
 
-const Task: React.FC<TaskComponentProps> = ({ taskId }) => {
+const Task: React.FC<TaskComponentProps> = ({ tasks, taskId }) => {
+    console.log('Hello wrold');
+    console.log(tasks);
     if (!taskId) {
         return null;
     }
 
     const task = tasks[taskId];
 
-    const { id, title, directSubtasks, uppermostTask, completedPomodoros, timeTaken, estimatedDuration, deadline } = task;
+    const { _id, title, directSubtasks, parentId, completedPomodoros, timeTaken, estimatedDuration, deadline } = task;
 
     const [completed, setCompleted] = useState(task.completed);
     // const [subtasks, setSubtasks] = useState(directSubtasks);
@@ -26,8 +28,8 @@ const Task: React.FC<TaskComponentProps> = ({ taskId }) => {
     const navigate = useNavigate();
 
     return (
-        <div className={`text-white bg-[#242424] ${uppermostTask ? 'p-5' : 'pt-5 pl-8'}`}>
-            <div onClick={() => navigate(`/tasks/${id}`)} className="gap-3 cursor-pointer">
+        <div className={`text-white bg-[#242424] ${!parentId ? 'p-5' : 'pt-5 pl-8'}`}>
+            <div onClick={() => navigate(`/tasks/${_id}`)} className="gap-3 cursor-pointer">
                 <div className="w-full flex justify-between">
                     <div className="flex gap-3">
                         <div className="cursor-pointer" onClick={() => setCompleted(!completed)}>
@@ -95,7 +97,7 @@ const Task: React.FC<TaskComponentProps> = ({ taskId }) => {
             </div>
 
             {showSubtasks && directSubtasks.map((subtaskId) => (
-                <Task key={subtaskId} taskId={subtaskId} />
+                <Task key={subtaskId} tasks={tasks} taskId={subtaskId} />
             ))}
         </div>
     );

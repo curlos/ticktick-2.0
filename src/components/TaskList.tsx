@@ -28,9 +28,11 @@ const TaskList: React.FC<TaskListProps> = ({ listName, tasks }) => {
             )}
             {showTasks && (
                 <>
-                    {tasks.map((task) => (
-                        task.uppermostTask && <Task taskId={task.id} />
-                    ))}
+                    {Object.values(tasks).map((task) => {
+                        return (
+                            !task.parentId && <Task key={task._id} tasks={tasks} taskId={task._id} />
+                        );
+                    })}
                 </>
             )}
         </div>
