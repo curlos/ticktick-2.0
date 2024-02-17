@@ -27,6 +27,7 @@ const TopBar: React.FC = () => {
 const TaskListPage = () => {
     const allTasks = useSelector((state) => state.tasks.tasks);
 
+
     return (
         <div className="w-h-screen min-h-screen flex flex-col items-center bg-black text-white">
             <div className="flex flex-col flex-1 container pt-6">

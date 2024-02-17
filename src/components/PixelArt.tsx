@@ -44,9 +44,4 @@ function extractColorsFromHTML(htmlString: string) {
   return colors;
 }
 
-
-// Example usage:
-const htmlString = `<div id="grid" class="grid" style="grid-template-columns: repeat(20, 1fr); grid-template-rows: repeat(20, 1fr);">...</div>`;
-const colorArray = extractColorsFromHTML(htmlString);
-
 export default PixelArt;

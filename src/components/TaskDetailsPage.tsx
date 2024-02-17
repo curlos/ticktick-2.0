@@ -78,7 +78,7 @@ const TaskDetailsPage = () => {
         return null;
     }
 
-    const { _id, title, directSubtasks, completedPomodoros, timeTaken, estimatedDuration, deadline, description } = task;
+    const { title, directSubtasks, completedPomodoros, timeTaken, estimatedDuration, deadline, description } = task;
     const formattedTimeTaken = millisecondsToHoursAndMinutes(timeTaken);
     const formattedEstimatedDuration = millisecondsToHoursAndMinutes(estimatedDuration);
 
@@ -144,7 +144,7 @@ const TaskDetailsPage = () => {
 
                     {/* Title */}
                     <div className="mt-6">
-                        <div className="text-[20px] font-bold">{task.title}</div>
+                        <div className="text-[20px] font-bold">{title}</div>
                     </div>
 
                     {/* Description */}
