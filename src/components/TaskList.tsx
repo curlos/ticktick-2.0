@@ -1,10 +1,10 @@
 import Task from "./Task";
 import { FaChevronDown, FaChevronLeft } from "react-icons/fa6";
 import { useState } from "react";
-import { TaskObjProps } from "../types";
+import { TaskObj } from "../types";
 
 interface TaskListProps {
-    tasks: Array<TaskObjProps>;
+    tasks: Array<TaskObj>;
     listName: string;
 }
 

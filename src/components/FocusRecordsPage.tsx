@@ -2,11 +2,11 @@ import { useState } from 'react';
 import IconsBar from './IconsBar';
 import { FaChevronLeft, FaClock } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
-import { TaskObjProps, Tasks } from '../types';
+import { TaskObj, Tasks } from '../types';
 
 
 interface SimpleFocusRecord {
-    task: TaskObjProps;
+    task: TaskObj;
 }
 
 const SimpleFocusRecord: React.FC<SimpleFocusRecord> = ({ task }) => {

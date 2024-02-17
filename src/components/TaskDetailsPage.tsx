@@ -3,14 +3,15 @@ import IconsBar from './IconsBar';
 import { FaChevronLeft, FaAnglesUp, FaRegSquare, FaSquareCheck, FaFlag, FaStopwatch, FaRegStar, FaListCheck, FaPlus } from 'react-icons/fa6';
 import { FaEllipsisH } from 'react-icons/fa';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { TaskObjProps, Tasks } from '../types';
+import { TaskObj, Tasks } from '../types';
 import { millisecondsToHoursAndMinutes } from '../utils/Helpers';
 import TaskList from './TaskList';
 import Task from './Task';
+import { useSelector } from 'react-redux';
 
 
 interface SimpleFocusRecord {
-    task: TaskObjProps;
+    task: TaskObj;
 }
 
 const SimpleFocusRecord: React.FC<SimpleFocusRecord> = ({ task }) => {
@@ -30,69 +31,6 @@ const SimpleFocusRecord: React.FC<SimpleFocusRecord> = ({ task }) => {
                         {title !== 'Twitter 2.0' && <span className="text-[#7C7C7C] font-normal"> (Twitter 2.0)</span>}
                     </div>
                 </div>
-            </div>
-        </div>
-    );
-};
-
-const FocusRecordsList = () => {
-    // const tasks: Tasks = {
-    //     '1a781d9a-c4e4-461f-92cd-2b2b7358489e': {
-    //         id: '1a781d9a-c4e4-461f-92cd-2b2b7358489e',
-    //         title: 'Twitter 2.0',
-    //         completed: false,
-    //         directSubtasks: ['6b022e51-8c95-462e-9cc8-3bcd5f386798'],
-    //         uppermostTask: true,
-    //         completedPomodoros: 8,
-    //         timeTaken: 49500000, // 13h45m
-    //         estimatedDuration: 144000000,
-    //         deadline: 'Feb 7'
-    //     },
-    //     '6b022e51-8c95-462e-9cc8-3bcd5f386798': {
-    //         id: '6b022e51-8c95-462e-9cc8-3bcd5f386798',
-    //         title: 'Write comments',
-    //         completed: false,
-    //         directSubtasks: ['27366938-9da0-4ccf-97a6-a68817e5fb84'],
-    //         completedPomodoros: 0,
-    //         timeTaken: 0, // 13h45m
-    //         estimatedDuration: 0
-    //     },
-    //     '27366938-9da0-4ccf-97a6-a68817e5fb84': {
-    //         id: '27366938-9da0-4ccf-97a6-a68817e5fb84',
-    //         title: '...rest',
-    //         completed: false,
-    //         directSubtasks: [],
-    //         completedPomodoros: 0,
-    //         timeTaken: 0, // 13h45m
-    //         estimatedDuration: 0
-    //     },
-    // };
-
-    return (
-        <div className="flex flex-col gap-[50px]">
-            <div className="flex flex-col gap-4">
-                <div>Feb 10</div>
-                <SimpleFocusRecord task={tasks['1a781d9a-c4e4-461f-92cd-2b2b7358489e']} />
-                <SimpleFocusRecord task={tasks['1a781d9a-c4e4-461f-92cd-2b2b7358489e']} />
-                <SimpleFocusRecord task={tasks['1a781d9a-c4e4-461f-92cd-2b2b7358489e']} />
-                <SimpleFocusRecord task={tasks['1a781d9a-c4e4-461f-92cd-2b2b7358489e']} />
-            </div>
-
-            <div className="flex flex-col gap-4">
-                <div>Feb 8</div>
-                <SimpleFocusRecord task={tasks['6b022e51-8c95-462e-9cc8-3bcd5f386798']} />
-            </div>
-
-            <div className="flex flex-col gap-4">
-                <div>Feb 7</div>
-                <SimpleFocusRecord task={tasks['27366938-9da0-4ccf-97a6-a68817e5fb84']} />
-                <SimpleFocusRecord task={tasks['1a781d9a-c4e4-461f-92cd-2b2b7358489e']} />
-                <SimpleFocusRecord task={tasks['27366938-9da0-4ccf-97a6-a68817e5fb84']} />
-                <SimpleFocusRecord task={tasks['27366938-9da0-4ccf-97a6-a68817e5fb84']} />
-                <SimpleFocusRecord task={tasks['27366938-9da0-4ccf-97a6-a68817e5fb84']} />
-                <SimpleFocusRecord task={tasks['1a781d9a-c4e4-461f-92cd-2b2b7358489e']} />
-                <SimpleFocusRecord task={tasks['27366938-9da0-4ccf-97a6-a68817e5fb84']} />
-                <SimpleFocusRecord task={tasks['1a781d9a-c4e4-461f-92cd-2b2b7358489e']} />
             </div>
         </div>
     );
@@ -118,17 +56,12 @@ const TopBar: React.FC = () => {
     );
 };
 
-interface TaskDetailsPageProps {
-    tasks: {
-        [key: string]: TaskObjProps;
-    };
-}
+const TaskDetailsPage = () => {
+    const tasks = useSelector((state) => state.tasks.tasks);
 
-const TaskDetailsPage: React.FC<TaskDetailsPageProps> = ({ tasks }) => {
-    console.log(tasks);
     let { taskId } = useParams();
     let navigate = useNavigate();
-    const [task, setTask] = useState<TaskObjProps>({});
+    const [task, setTask] = useState<TaskObj>({});
     const [completed, setCompleted] = useState(false);
 
     useEffect(() => {
@@ -145,7 +78,7 @@ const TaskDetailsPage: React.FC<TaskDetailsPageProps> = ({ tasks }) => {
         return null;
     }
 
-    const { _id, title, directSubtasks, uppermostTask, completedPomodoros, timeTaken, estimatedDuration, deadline, description } = task;
+    const { _id, title, directSubtasks, completedPomodoros, timeTaken, estimatedDuration, deadline, description } = task;
     const formattedTimeTaken = millisecondsToHoursAndMinutes(timeTaken);
     const formattedEstimatedDuration = millisecondsToHoursAndMinutes(estimatedDuration);
 

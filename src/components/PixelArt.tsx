@@ -35,15 +35,11 @@ function extractColorsFromHTML(htmlString: string) {
   const colors = [];
   let match;
 
-  console.log([...htmlString.matchAll(divRegex)]);
-
   // Iterate over all matches and add the appropriate color or 'transparent' to the array
   while ((match = divRegex.exec(htmlString)) !== null) {
     const color = match[1] || 'transparent'; // If no style attribute, use 'transparent'
     colors.push(color.replace(';', ''));
   }
-
-  console.log(colors);
 
   return colors;
 }
@@ -52,7 +48,5 @@ function extractColorsFromHTML(htmlString: string) {
 // Example usage:
 const htmlString = `<div id="grid" class="grid" style="grid-template-columns: repeat(20, 1fr); grid-template-rows: repeat(20, 1fr);">...</div>`;
 const colorArray = extractColorsFromHTML(htmlString);
-
-console.log(colorArray); // Prints the array of colors
 
 export default PixelArt;

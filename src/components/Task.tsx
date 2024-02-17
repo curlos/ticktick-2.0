@@ -2,15 +2,13 @@ import { useState } from "react";
 import { FaRegSquare, FaSquareCheck, FaChevronDown, FaChevronLeft, FaRegStar, FaStopwatch, FaListCheck } from "react-icons/fa6";
 import { millisecondsToHoursAndMinutes } from "../utils/Helpers";
 import { useNavigate } from "react-router-dom";
-import { TaskObjProps } from "../types";
+import { TaskObj } from "../types";
 interface TaskComponentProps {
-    tasks: TaskObjProps[];
+    tasks: TaskObj[];
     taskId: string;
 }
 
 const Task: React.FC<TaskComponentProps> = ({ tasks, taskId }) => {
-    console.log('Hello wrold');
-    console.log(tasks);
     if (!taskId) {
         return null;
     }
@@ -49,10 +47,12 @@ const Task: React.FC<TaskComponentProps> = ({ tasks, taskId }) => {
                             e.stopPropagation();
                             setShowSubtasks(!showSubtasks);
                         }}>
-                            {showSubtasks ? (
-                                <FaChevronDown size={'15px'} color={'gray'} />
-                            ) : (
-                                <FaChevronLeft size={'15px'} color={'gray'} />
+                            {directSubtasks && directSubtasks.length > 0 && (
+                                showSubtasks ? (
+                                    <FaChevronDown size={'15px'} color={'gray'} />
+                                ) : (
+                                    <FaChevronLeft size={'15px'} color={'gray'} />
+                                )
                             )}
                         </span>
                     </div>

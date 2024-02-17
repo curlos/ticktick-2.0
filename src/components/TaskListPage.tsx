@@ -1,13 +1,9 @@
 import { Link } from "react-router-dom";
 import IconsBar from "./IconsBar";
-import Task from "./Task";
 import { FaEllipsisH } from "react-icons/fa";
-import { FaChevronDown, FaChevronLeft } from "react-icons/fa6";
-import { useEffect, useState } from "react";
+import { FaChevronLeft } from "react-icons/fa6";
 import TaskList from "./TaskList";
-import { tasks } from "../utils/Tasks";
-import { arrayToObjectByKey } from "../utils/Helpers";
-import { TaskObjProps } from "../types";
+import { useSelector } from "react-redux";
 
 const TopBar: React.FC = () => {
 
@@ -28,13 +24,8 @@ const TopBar: React.FC = () => {
     );
 };
 
-interface TaskListPageProps {
-    tasks: {
-        [key: string]: TaskObjProps;
-    };
-}
-
-const TaskListPage: React.FC<TaskListPageProps> = ({ tasks }) => {
+const TaskListPage = () => {
+    const allTasks = useSelector((state) => state.tasks.tasks);
 
     return (
         <div className="w-h-screen min-h-screen flex flex-col items-center bg-black text-white">
@@ -42,7 +33,7 @@ const TaskListPage: React.FC<TaskListPageProps> = ({ tasks }) => {
                 <TopBar />
 
                 <div className="mt-10 flex flex-col gap-3">
-                    <TaskList listName={'High Priority'} tasks={tasks} />
+                    <TaskList listName={'High Priority'} tasks={allTasks} />
                     {/* <TaskList listName={'Medium Priority'} tasks={highPriorityTasks} />
                     <TaskList listName={'Low Priority'} tasks={highPriorityTasks} />
                     <TaskList listName={'Completed'} tasks={highPriorityTasks} /> */}

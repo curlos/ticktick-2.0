@@ -1,4 +1,4 @@
-export interface TaskObjProps {
+export interface TaskObj {
     _id: string,
     title: string,
     completed: boolean,
@@ -12,5 +12,5 @@ export interface TaskObjProps {
 }
 
 export interface Tasks {
-    [key: string]: TaskObjProps;
+    [key: string]: TaskObj;
 }
