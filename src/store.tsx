@@ -17,10 +17,16 @@ const tasksSlice = createSlice({
         setTasks(state, action) {
             state.tasks = action.payload;
         },
+        // Action to add a single task
+        addTask(state, action) {
+            // Assuming tasks is an object keyed by task IDs
+            const task = action.payload;
+            state.tasks[task._id] = task; // Add the new task to the tasks object
+            // Update local storage
+            localStorage.setItem('allTasks', JSON.stringify(state.tasks));
+        },
     },
 });
-
-export const { setTasks } = tasksSlice.actions;
 
 // Create and configure the store
 const store = configureStore({
@@ -28,5 +34,7 @@ const store = configureStore({
         tasks: tasksSlice.reducer,
     },
 });
+
+export const { setTasks, addTask } = tasksSlice.actions;
 
 export default store;

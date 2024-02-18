@@ -10,7 +10,7 @@ const useFetchTasks = () => {
     useEffect(() => {
         const fetchTasks = async () => {
             try {
-                const response = await fetch(`http://localhost:8888/tasks`);
+                const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/tasks`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }

@@ -10,11 +10,13 @@ import FocusRecordsPage from './components/FocusRecordsPage';
 import TaskDetailsPage from './components/TaskDetailsPage';
 import TaskListPage from './components/TaskListPage';
 import useFetchTasks from './hooks/useFetchTasks';
-import ModalAddTask from './components/ModalAddTask';
+import ModalAddTask from './components/modals/ModalAddTask';
+import ModalDatePicker from './components/modals/ModalDatepicker';
 
 const App = () => {
   useFetchTasks(); // This will fetch tasks when the component mounts
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalAddTaskOpen, setIsModalAddTaskOpen] = useState(true);
+  // const [isModalDatePickerOpen, setIsModalDatePickerOpen] = useState(true);
 
   return (
     <div>
@@ -42,7 +44,8 @@ const App = () => {
         </Routes>
       </Router>
 
-      <ModalAddTask isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+      <ModalAddTask isModalOpen={isModalAddTaskOpen} setIsModalOpen={setIsModalAddTaskOpen} />
+      {/* <ModalDatePicker isModalOpen={isModalDatePickerOpen} setIsModalOpen={setIsModalDatePickerOpen} /> */}
     </div>
   );
 };
