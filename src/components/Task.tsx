@@ -30,7 +30,10 @@ const Task: React.FC<TaskComponentProps> = ({ tasks, taskId }) => {
             <div onClick={() => navigate(`/tasks/${_id}`)} className="gap-3 cursor-pointer">
                 <div className="w-full flex justify-between">
                     <div className="flex gap-3">
-                        <div className="cursor-pointer" onClick={() => setCompleted(!completed)}>
+                        <div className="cursor-pointer" onClick={(e) => {
+                            e.stopPropagation();
+                            setCompleted(!completed);
+                        }}>
                             {!completed ? (
                                 <FaRegSquare size={'20px'} color={'gray'} />
                             ) : (

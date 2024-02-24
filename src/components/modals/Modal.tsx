@@ -12,7 +12,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, setIsOpen, modalBodyStyles, child
 
     return (
         <div className="fixed inset-0 z-50 overflow-auto flex bg-black bg-opacity-50" onClick={() => setIsOpen(false)}>
-            <div className={`relative p-4 text-white bg-[#292929] w-full max-w-md m-auto flex-col flex rounded-lg` + modalBodyStyles} onClick={(e) => e.stopPropagation()}>
+            <div className={`relative p-4 text-white bg-[#242424] w-full max-w-md m-auto flex-col flex rounded-lg` + (modalBodyStyles ? modalBodyStyles : '')} onClick={(e) => e.stopPropagation()}>
                 <div>{children}</div>
             </div>
         </div>

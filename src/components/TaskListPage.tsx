@@ -8,10 +8,11 @@ import { useSelector } from "react-redux";
 const TopBar: React.FC = () => {
 
     return (
-        <div className="flex justify-between items-center">
-            <Link to="/focus" className="cursor-pointer">
+        <div className="flex justify-between items-center sticky top-0 py-6 bg-black">
+            {/* <Link to="/focus" className="cursor-pointer">
                 <FaChevronLeft size={'20px'} color={'#999999'} />
-            </Link>
+            </Link> */}
+            <FaChevronLeft size={'20px'} color={'#999999'} className="cursor-pointer" onClick={() => history.back()} />
 
             <div className="flex gap-1 mx-[100px] text-[20px]">
                 Today
@@ -30,7 +31,7 @@ const TaskListPage = () => {
 
     return (
         <div className="w-h-screen min-h-screen flex flex-col items-center bg-black text-white">
-            <div className="flex flex-col flex-1 container pt-6">
+            <div className="flex flex-col flex-1 container">
                 <TopBar />
 
                 <div className="mt-10 flex flex-col gap-3">

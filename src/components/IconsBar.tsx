@@ -20,7 +20,7 @@ const IconsBar = () => {
     const location = useLocation();
 
     return (
-        <div className="bg-black mx-10 flex justify-center gap-10 p-4">
+        <div className="bg-black mx-10 flex justify-center gap-10 p-4 sticky bottom-0 w-full">
             <Icon IconComponent={FaSquareCheck} route="/tasks" selected={location.pathname === '/tasks'} />
             <Icon IconComponent={FaClock} route="/focus" selected={location.pathname === '/focus'} />
             <Icon IconComponent={FaHistory} route="/focus-records" selected={location.pathname === '/focus-records'} />

@@ -8,6 +8,9 @@ import { millisecondsToHoursAndMinutes } from '../utils/Helpers';
 import TaskList from './TaskList';
 import Task from './Task';
 import { useSelector } from 'react-redux';
+import ModalTaskOptions from './modals/ModalTaskOptions';
+import ModalDatePicker from './modals/ModalDatepicker';
+import ModalAddTask from './modals/ModalAddTask';
 
 
 interface SimpleFocusRecord {
@@ -36,20 +39,26 @@ const SimpleFocusRecord: React.FC<SimpleFocusRecord> = ({ task }) => {
     );
 };
 
-const TopBar: React.FC = () => {
+interface TopBarProps {
+    setIsModalTaskOptionsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const TopBar: React.FC<TopBarProps> = ({ setIsModalTaskOptionsOpen }) => {
 
     return (
         <div className="flex justify-between items-center">
-            <Link to="/focus" className="cursor-pointer">
+            {/* <Link to="/focus" className="cursor-pointer">
                 <FaChevronLeft size={'20px'} color={'#999999'} />
-            </Link>
+            </Link> */}
+
+            <FaChevronLeft size={'20px'} color={'#999999'} className="cursor-pointer" onClick={() => history.back()} />
 
             <div className="flex items-center gap-1 mx-[100px] text-[20px]">
                 Side Projects
                 <FaAnglesUp size={'15px'} color={'#999999'} />
             </div>
 
-            <div className="text-[#FE7C01]">
+            <div className="text-[#FE7C01] cursor-pointer" onClick={() => setIsModalTaskOptionsOpen(true)}>
                 <FaEllipsisH size={'20px'} color={'#999999'} />
             </div>
         </div>
@@ -63,6 +72,10 @@ const TaskDetailsPage = () => {
     let navigate = useNavigate();
     const [task, setTask] = useState<TaskObj>({});
     const [completed, setCompleted] = useState(false);
+    const [dueDate, setDueDate] = useState<Date | null>(null);
+    const [isModalAddTaskOpen, setIsModalAddTaskOpen] = useState(false);
+    const [isModalTaskOptionsOpen, setIsModalTaskOptionsOpen] = useState(false);
+    const [isModalDatePickerOpen, setIsModalDatePickerOpen] = useState(false);
 
     useEffect(() => {
         if (!taskId || !tasks[taskId]) {
@@ -86,10 +99,13 @@ const TaskDetailsPage = () => {
         task ? (
             <div className="w-h-screen min-h-screen flex flex-col items-center bg-black text-white">
                 <div className="flex flex-col flex-1 container pt-6">
-                    <TopBar />
+                    <TopBar setIsModalTaskOptionsOpen={setIsModalTaskOptionsOpen} />
 
                     <div className="mt-4 flex justify-between gap-2">
-                        <div className="cursor-pointer" onClick={() => setCompleted(!completed)}>
+                        <div className="cursor-pointer" onClick={(e) => {
+                            e.stopPropagation();
+                            setCompleted(!completed);
+                        }}>
                             {!completed ? (
                                 <FaRegSquare size={'20px'} color={'gray'} />
                             ) : (
@@ -100,7 +116,7 @@ const TaskDetailsPage = () => {
                             {deadline ? (
                                 <span className="mr-2 text-[#FF7D01]">{deadline}</span>
                             ) : (
-                                <span className="text-[#7C7C7C]">Date & Repeat</span>
+                                <span className="text-[#7C7C7C] cursor-pointer" onClick={() => setIsModalDatePickerOpen(true)}>Date & Repeat</span>
                             )}
                         </div>
                         <div>
@@ -112,10 +128,9 @@ const TaskDetailsPage = () => {
 
                     <div className="mt-5">
                         <div className="flex gap-[4px] items-center">
-                            <span className="text-[#7C7C7C] mr-2">Focused for</span>
-
                             {completedPomodoros !== 0 && (
                                 <>
+                                    <span className="text-[#7C7C7C] mr-2">Focused for</span>
                                     <FaRegStar size={'15px'} color={'#FF7D01'} />
                                     <span className="text-[#FF7D01] text-[15px] mr-1">{completedPomodoros}</span>
                                 </>
@@ -163,7 +178,7 @@ const TaskDetailsPage = () => {
                                 <Task key={subtaskId} tasks={tasks} taskId={subtaskId} />
                             ))}
 
-                            <div className="flex items-center gap-2 px-8 pt-5 pb-3 text-[#FF7D01] bg-[#242424] cursor-pointer">
+                            <div className="flex items-center gap-2 px-8 pt-5 pb-3 text-[#FF7D01] bg-[#242424] cursor-pointer" onClick={() => setIsModalAddTaskOpen(true)}>
                                 <FaPlus size={'15px'} color={'#FF7D01'} />
                                 Add Subtask
                             </div>
@@ -172,6 +187,11 @@ const TaskDetailsPage = () => {
 
                 </div>
                 <IconsBar />
+
+                <ModalAddTask isModalOpen={isModalAddTaskOpen} setIsModalOpen={setIsModalAddTaskOpen} />
+                <ModalTaskOptions isModalOpen={isModalTaskOptionsOpen} setIsModalOpen={setIsModalTaskOptionsOpen} task={task} />
+                <ModalDatePicker isModalOpen={isModalDatePickerOpen} setIsModalOpen={setIsModalDatePickerOpen} dueDate={dueDate} setDueDate={setDueDate} />
+
             </div >
         ) : (
             <div>Loading...</div>

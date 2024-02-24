@@ -1,7 +1,7 @@
 import Modal from './Modal';
 import TextareaAutosize from 'react-textarea-autosize';
-import { FaCalendarAlt } from 'react-icons/fa';
-import { FaRegFlag, FaArrowUp } from 'react-icons/fa6';
+import { FaCalendarAlt, FaEllipsisH } from 'react-icons/fa';
+import { FaRegFlag, FaArrowUp, FaTag } from 'react-icons/fa6';
 import { useState } from 'react';
 import TooltipPriorities from '../TooltipPriorities';
 import { useDispatch } from 'react-redux';
@@ -26,7 +26,7 @@ const ModalAddTask: React.FC<ModalAddTaskProps> = ({ isModalOpen, setIsModalOpen
         flagColor: '#7B7B7B'
     });
 
-    const [isModalDatePickerOpen, setIsModalDatePickerOpen] = useState(true);
+    const [isModalDatePickerOpen, setIsModalDatePickerOpen] = useState(false);
 
     const handleAddTask = async () => {
         const payload = {
@@ -59,22 +59,35 @@ const ModalAddTask: React.FC<ModalAddTaskProps> = ({ isModalOpen, setIsModalOpen
         }
     };
 
+    const handleIsModalOpen = () => {
+        if (isModalDatePickerOpen) {
+            setIsModalDatePickerOpen(false);
+        } else if (isTooltipVisible) {
+            setIsTooltipVisible(false);
+        } else {
+            setIsModalOpen(false);
+        }
+    };
+
     return (
         <>
-            <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
+            <Modal isOpen={isModalOpen} setIsOpen={handleIsModalOpen} modalBodyStyles={' max-w-lg'}>
                 <div onClick={() => setIsTooltipVisible(false)}>
                     <TextareaAutosize className="text-[20px] placeholder:text-[#7C7C7C] font-bold mb-0 bg-transparent w-full outline-none resize-none" placeholder="What would you like to do?" value={title} onChange={(e) => setTitle(e.target.value)}></TextareaAutosize>
                     <TextareaAutosize className="text-[16px] placeholder:text-[#7C7C7C] mb-4 bg-transparent w-full outline-none resize-none" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)}></TextareaAutosize>
                     <div className="flex justify-between">
-                        <div className="flex items-center gap-3">
-                            {dueDate ? (
-                                <div className="flex items-center gap-1">
-                                    <FaCalendarAlt size={'18px'} color={'#E1312F'} className="cursor-pointer" />
-                                    <p>Today</p>
-                                </div>
-                            ) : (
-                                <FaCalendarAlt size={'18px'} color={'gray'} />
-                            )}
+                        <div className="flex items-center gap-5">
+                            <div className="cursor-pointer" onClick={() => setIsModalDatePickerOpen(true)}>
+                                {dueDate ? (
+                                    <div className="flex items-center gap-1">
+                                        <FaCalendarAlt size={'18px'} color={'#E1312F'} className="cursor-pointer" />
+                                        <p>Today</p>
+                                    </div>
+                                ) : (
+                                    <FaCalendarAlt size={'18px'} color={'gray'} />
+                                )}
+                            </div>
+
                             <div>
                                 <TooltipPriorities isTooltipVisible={isTooltipVisible} setPriority={setPriority} />
                                 <FaRegFlag size={'16px'} color={priority && priority.flagColor ? priority.flagColor : 'gray'} className="cursor-pointer" onClick={(e: any) => {
@@ -82,11 +95,19 @@ const ModalAddTask: React.FC<ModalAddTaskProps> = ({ isModalOpen, setIsModalOpen
                                     setIsTooltipVisible(!isTooltipVisible);
                                 }} />
                             </div>
+
+                            <div className="cursor-pointer" onClick={() => setIsModalDatePickerOpen(true)}>
+                                <FaTag size={'18px'} color={'gray'} />
+                            </div>
+
+                            <div className="cursor-pointer" onClick={() => setIsModalDatePickerOpen(true)}>
+                                <FaEllipsisH size={'18px'} color={'gray'} />
+                            </div>
                         </div>
 
-                        <div className="bg-orange-500 rounded-full p-2 self-end cursor-pointer" onClick={handleAddTask}>
+                        <button className={`bg-orange-500 rounded-full p-2 self-end cursor-pointer` + (!title ? ' opacity-50' : '')} disabled={!title} onClick={handleAddTask}>
                             <FaArrowUp size={'14px'} color={'#292929'} />
-                        </div>
+                        </button>
                     </div>
                 </div>
             </Modal>
