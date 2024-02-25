@@ -12,54 +12,22 @@ import { FiXSquare } from 'react-icons/fi';
 import { AiFillPushpin } from 'react-icons/ai';
 import { TaskObj } from '../../types';
 import { RiFocus3Line } from 'react-icons/ri';
+import ModalStartFocus from './ModalStartFocus';
+import ModalAddTask from './ModalAddTask';
+import ModalTaskActivities from './ModalTaskActivities';
+import ModalTaskComments from './ModalTaskComments';
 
-interface ModalAddTaskProps {
+interface ModalTaskOptionsProps {
     isModalOpen: boolean;
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
     task: TaskObj;
 }
 
-const ModalTaskOptions: React.FC<ModalAddTaskProps> = ({ isModalOpen, setIsModalOpen, task }) => {
-    const dispatch = useDispatch();
-
-    // useStates
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [dueDate, setDueDate] = useState<Date | null>(null);
-    const [isTooltipVisible, setIsTooltipVisible] = useState(false);
-    const [priority, setPriority] = useState({
-        name: 'No Priority',
-        backendValue: null,
-        flagColor: '#7B7B7B'
-    });
-
-    const handleAddTask = async () => {
-        const payload = {
-            title,
-            description,
-            priority: priority && priority.backendValue
-        };
-
-        try {
-            const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/tasks/add`, {
-                method: 'POST', // Specify the request method
-                headers: {
-                    'Content-Type': 'application/json', // Indicate the type of content expected by the server
-                },
-                body: JSON.stringify(payload), // Send the data as a JSON string
-            });
-
-            if (!response.ok) {
-                // If the server response is not ok, throw an error
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const responseData = await response.json(); // Parse the JSON response
-            dispatch(addTask(responseData)); // Dispatch an action to update the Redux store
-        } catch (error) {
-            console.error('There was a problem with the fetch operation:', error);
-        }
-    };
+const ModalTaskOptions: React.FC<ModalTaskOptionsProps> = ({ isModalOpen, setIsModalOpen, task }) => {
+    const [isModalAddTaskOpen, setIsModalAddTaskOpen] = useState(false);
+    const [isModalStartFocusOpen, setIsModalStartFocusOpen] = useState(false);
+    const [isModalTaskActivitiesOpen, setIsModalTaskActivitiesOpen] = useState(false);
+    const [isModalTaskCommentsOpen, setIsModalTaskCommentsOpen] = useState(false);
 
     interface OptionProps {
         IconComponent: any;
@@ -67,10 +35,11 @@ const ModalTaskOptions: React.FC<ModalAddTaskProps> = ({ isModalOpen, setIsModal
         textColor?: string;
         color: string;
         text: string;
+        onClick?: React.MouseEventHandler<HTMLDivElement> | undefined;
     }
 
-    const MainOption: React.FC<OptionProps> = ({ IconComponent, size, color, text }) => (
-        <div className="text-center cursor-pointer">
+    const MainOption: React.FC<OptionProps> = ({ IconComponent, size, color, text, onClick }) => (
+        <div className="text-center cursor-pointer" onClick={onClick}>
             <div className="flex justify-center bg-[#303030] p-4 rounded-xl mb-2">
                 <IconComponent size={size ? size : '25px'} color={color ? color : '#E1312F'} />
             </div>
@@ -78,8 +47,8 @@ const ModalTaskOptions: React.FC<ModalAddTaskProps> = ({ isModalOpen, setIsModal
         </div>
     );
 
-    const SideOption: React.FC<OptionProps> = ({ IconComponent, size, textColor, color, text }) => (
-        <div className="cursor-pointer flex justify-between items-center gap-3">
+    const SideOption: React.FC<OptionProps> = ({ IconComponent, size, textColor, color, text, onClick }) => (
+        <div className="cursor-pointer flex justify-between items-center gap-3" onClick={onClick}>
             <div className={textColor ? textColor : ''}>{text}</div>
             <IconComponent size={size ? size : '25px'} color={color ? color : '#E1312F'} />
         </div>
@@ -87,7 +56,7 @@ const ModalTaskOptions: React.FC<ModalAddTaskProps> = ({ isModalOpen, setIsModal
 
     return (
         <>
-            <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} modalBodyStyles=" bg-[#242424]">
+            <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} modalBodyStyles=" bg-[#242424] max-w-2xl">
                 <div className="grid grid-cols-4 gap-10 px-3">
                     <MainOption IconComponent={AiFillPushpin} color="#FEAF00" textColor="text-[#D3D3D3]" text="Pin" />
                     <MainOption IconComponent={FaArrowUpRightFromSquare} color="#08CE9C" textColor="text-[#D3D3D3]" text="Share" />
@@ -96,26 +65,21 @@ const ModalTaskOptions: React.FC<ModalAddTaskProps> = ({ isModalOpen, setIsModal
                 </div>
 
                 <div className="mt-8 p-4 rounded-lg bg-[#303030] flex flex-col gap-6">
-                    <SideOption IconComponent={FaCodeBranch} size="20px" text="Add Subtask" color="#D5D5D5" />
-                    <SideOption IconComponent={RiFocus3Line} text="Start Focus" color="#D5D5D5" />
-                    <SideOption IconComponent={FaList} text="Task Activities" size="22px" color="#D5D5D5" />
-                    <SideOption IconComponent={FaRegCommentDots} text="Comment" size="22px" color="#D5D5D5" />
+                    <SideOption IconComponent={FaCodeBranch} size="20px" text="Add Subtask" color="#D5D5D5" onClick={() => setIsModalAddTaskOpen(true)} />
+                    <SideOption IconComponent={RiFocus3Line} text="Start Focus" color="#D5D5D5" onClick={() => setIsModalStartFocusOpen(true)} />
+                    <SideOption IconComponent={FaList} text="Task Activities" size="22px" color="#D5D5D5" onClick={() => setIsModalTaskActivitiesOpen(true)} />
+                    <SideOption IconComponent={FaRegCommentDots} text="Comment" size="22px" color="#D5D5D5" onClick={() => setIsModalTaskCommentsOpen(true)} />
                 </div>
 
                 <div className="mt-8 p-4 rounded-lg bg-[#303030] flex flex-col justify-center gap-6">
                     <SideOption IconComponent={FaEllipsisH} text="More" size="18px" color="#D5D5D5" />
                 </div>
-
-                {/* <div onClick={() => setIsTooltipVisible(false)}>
-
-
-                    <div className="flex justify-between">
-                        <div className="bg-orange-500 rounded-full p-2 self-end cursor-pointer" onClick={handleAddTask}>
-                            <FaArrowUp size={'14px'} color={'#292929'} />
-                        </div>
-                    </div>
-                </div> */}
             </Modal>
+
+            <ModalAddTask isModalOpen={isModalAddTaskOpen} setIsModalOpen={setIsModalAddTaskOpen} />
+            <ModalStartFocus isModalOpen={isModalStartFocusOpen} setIsModalOpen={setIsModalStartFocusOpen} task={task} />
+            <ModalTaskActivities isModalOpen={isModalTaskActivitiesOpen} setIsModalOpen={setIsModalTaskActivitiesOpen} task={task} />
+            <ModalTaskComments isModalOpen={isModalTaskCommentsOpen} setIsModalOpen={setIsModalTaskCommentsOpen} task={task} />
         </>
     );
 };
