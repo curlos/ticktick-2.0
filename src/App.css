@@ -20,3 +20,16 @@ body {
     z-index: 1;
     /* Ensure the line is behind the icons */
 }
+
+.recharts-layer.recharts-pie,
+.recharts-sector:focus {
+    outline: none !important;
+    outline-color: none;
+    outline-style: none;
+    outline-width: none;
+}
+
+.react-calendar-heatmap-all-weeks {
+    margin-top: 8px;
+    margin-left: 8px;
+}
