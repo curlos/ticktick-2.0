@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
-import IconsBar from './IconsBar';
+import IconsBar from '../components/IconsBar';
 import { FaChevronLeft, FaAnglesUp, FaRegSquare, FaSquareCheck, FaFlag, FaStopwatch, FaRegStar, FaListCheck, FaPlus } from 'react-icons/fa6';
 import { FaEllipsisH } from 'react-icons/fa';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { TaskObj, Tasks } from '../types';
 import { millisecondsToHoursAndMinutes } from '../utils/Helpers';
-import TaskList from './TaskList';
-import Task from './Task';
+import TaskList from '../components/TaskList';
+import Task from '../components/Task';
 import { useSelector } from 'react-redux';
-import ModalTaskOptions from './modals/ModalTaskOptions';
-import ModalDatePicker from './modals/ModalDatepicker';
-import ModalAddTask from './modals/ModalAddTask';
+import ModalTaskOptions from '../components/modals/ModalTaskOptions';
+import ModalDatePicker from '../components/modals/ModalDatepicker';
+import ModalAddTask from '../components/modals/ModalAddTask';
 
 
 interface SimpleFocusRecord {

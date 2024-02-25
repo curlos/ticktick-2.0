@@ -18,7 +18,7 @@ const ModalDatePicker: React.FC<ModalDatePickerProps> = ({ isModalOpen, setIsMod
     const [isTooltipVisible, setIsTooltipVisible] = useState(false);
 
     const sharedButtonStyle = `py-1 px-4 rounded-3xl cursor-pointer`;
-    const selectedButtonStyle = `${sharedButtonStyle} bg-[#50361D] text-[#FF7D00]`;
+    const selectedButtonStyle = `${sharedButtonStyle} bg-[#50361D] text-[#FF7D00] font-semibold`;
     const unselectedButtonStyle = `${sharedButtonStyle} text-[#666666]`;
     const [tempDueDate, setTempDueDate] = useState(dueDate);
 

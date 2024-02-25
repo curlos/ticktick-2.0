@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import alarmSound from '/clock-alarm-8761.mp3';
 import iosDarkNoise from '/IOS Dark Noise Background sound 1 Hour.mp3';
 import { FaHistory, FaEllipsisH } from "react-icons/fa";
-import IconsBar from "./IconsBar";
+import IconsBar from "../components/IconsBar";
 import { Link } from "react-router-dom";
-import PixelArt from "./PixelArt";
+import PixelArt from "../components/PixelArt";
 
 const bgThemeColor = 'bg-[#FF7D01]';
 const textThemeColor = 'text-[#FF7D01]';
@@ -152,7 +152,7 @@ interface TopBarProps {
 
 const TopBar: React.FC<TopBarProps> = ({ selectedButton, setSelectedButton }) => {
     const sharedButtonStyle = `py-1 px-4 rounded-3xl cursor-pointer`;
-    const selectedButtonStyle = `${sharedButtonStyle} bg-[#321900] text-[#FE7C01]`;
+    const selectedButtonStyle = `${sharedButtonStyle} bg-[#321900] text-[#FE7C01] font-semibold`;
     const unselectedButtonStyle = `${sharedButtonStyle} text-[#666666]`;
 
     return (

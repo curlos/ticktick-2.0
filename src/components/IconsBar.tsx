@@ -1,5 +1,5 @@
 import { FaSquareCheck, FaClock } from "react-icons/fa6";
-import { FaHistory } from "react-icons/fa";
+import { FaHistory, FaChartBar } from "react-icons/fa";
 import { Link, useLocation } from 'react-router-dom';
 
 interface IconProps {
@@ -24,6 +24,7 @@ const IconsBar = () => {
             <Icon IconComponent={FaSquareCheck} route="/tasks" selected={location.pathname === '/tasks'} />
             <Icon IconComponent={FaClock} route="/focus" selected={location.pathname === '/focus'} />
             <Icon IconComponent={FaHistory} route="/focus-records" selected={location.pathname === '/focus-records'} />
+            <Icon IconComponent={FaChartBar} route="/focus-stats" selected={location.pathname === '/focus-stats'} />
 
 
         </div>

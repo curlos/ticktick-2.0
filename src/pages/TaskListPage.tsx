@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import IconsBar from "./IconsBar";
+import IconsBar from "../components/IconsBar";
 import { FaEllipsisH } from "react-icons/fa";
 import { FaChevronLeft } from "react-icons/fa6";
-import TaskList from "./TaskList";
+import TaskList from "../components/TaskList";
 import { useSelector } from "react-redux";
 
 const TopBar: React.FC = () => {

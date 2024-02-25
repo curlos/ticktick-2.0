@@ -14,7 +14,7 @@ const ModalStartFocus: React.FC<ModalStartFocusProps> = ({ isModalOpen, setIsMod
     const [selectedButton, setSelectedButton] = useState('stopwatch');
 
     const sharedButtonStyle = `py-1 px-4 rounded-3xl cursor-pointer`;
-    const selectedButtonStyle = `${sharedButtonStyle} bg-[#3A2D20] text-[#F87A00]`;
+    const selectedButtonStyle = `${sharedButtonStyle} bg-[#3A2D20] text-[#F87A00] font-semibold`;
     const unselectedButtonStyle = `${sharedButtonStyle} text-[#666666]`;
 
     return (

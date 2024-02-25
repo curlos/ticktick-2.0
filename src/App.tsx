@@ -5,11 +5,12 @@ import {
   Route,
 } from 'react-router-dom';
 import './App.css';
-import TimerPage from './components/TimerPage';
-import FocusRecordsPage from './components/FocusRecordsPage';
-import TaskDetailsPage from './components/TaskDetailsPage';
-import TaskListPage from './components/TaskListPage';
+import TimerPage from './pages/TimerPage';
+import FocusRecordsPage from './pages/FocusRecordsPage';
+import TaskDetailsPage from './pages/TaskDetailsPage';
+import TaskListPage from './pages/TaskListPage';
 import useFetchTasks from './hooks/useFetchTasks';
+import FocusStatsPage from './pages/FocusStatsPage';
 
 const App = () => {
   useFetchTasks(); // This will fetch tasks when the component mounts
@@ -32,6 +33,9 @@ const App = () => {
           } />
           <Route path="/focus-records" element={
             <FocusRecordsPage />
+          } />
+          <Route path="/focus-stats" element={
+            <FocusStatsPage />
           } />
           {/* Fallback route for 404 Not Found */}
           <Route path="*" element={
